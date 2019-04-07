@@ -30,25 +30,23 @@ Loop, Read, .\ASS_dokidoki-goodend_resources\act1_yuri_poemwords.txt
 composePoem(member) {
 	global
 	
-	natsukiWords := 0
-	yuriWords := 0
-	sayoriWords := 0
+	jumpWordsPicked := 0
 	if (member = "natsuki")
 	{
 		Loop, 20 {
-			if (natsukiWords < 10) {
+			if (jumpWordsPicked < 10) {
 				for i, poemWord in natsukiPoemWords
 				{
 					ImageSearch, FoundX, FoundY, 633, 190, 1333, 848, .\ASS_dokidoki-goodend_resources\poem_words\%poemWord%.png
 					if (ErrorLevel = 0) {
 						Click, %FoundX%, %FoundY%
 						MouseMove, 291, 586
-						natsukiWords++
+						jumpWordsPicked++
 						break
 					}
 				}
 			}
-			if (ErrorLevel != 0 || natsukiWords >= 10) {
+			if (ErrorLevel != 0 || jumpWordsPicked >= 10) {
 				Click, 692, 285
 				MouseMove, 291, 586
 			}
@@ -57,19 +55,19 @@ composePoem(member) {
 	else if (member = "yuri")
 	{
 		Loop, 20 {
-			if (yuriWords < 10) {
+			if (jumpWordsPicked < 10) {
 				for i, poemWord in yuriPoemWords
 				{
 					ImageSearch, FoundX, FoundY, 633, 190, 1333, 848, .\ASS_dokidoki-goodend_resources\poem_words\%poemWord%.png
 					if (ErrorLevel = 0) {
 						Click, %FoundX%, %FoundY%
 						MouseMove, 291, 586
-						yuriWords++
+						jumpWordsPicked++
 						break
 					}
 				}
 			}
-			if (ErrorLevel != 0 || yuriWords >= 10) {
+			if (ErrorLevel != 0 || jumpWordsPicked >= 10) {
 				Click, 692, 285
 				MouseMove, 291, 586
 			}
@@ -78,19 +76,19 @@ composePoem(member) {
 	else if (member = "sayori")
 	{
 		Loop, 20 {
-			if (sayoriWords < 10) {
+			if (jumpWordsPicked < 10) {
 				for i, poemWord in sayoriPoemWords
 				{
 					ImageSearch, FoundX, FoundY, 633, 190, 1333, 848, .\ASS_dokidoki-goodend_resources\poem_words\%poemWord%.png
 					if (ErrorLevel = 0) {
 						Click, %FoundX%, %FoundY%
 						MouseMove, 291, 586
-						sayoriWords++
+						jumpWordsPicked++
 						break
 					}
 				}
 			}
-			if (ErrorLevel != 0 || sayoriWords >= 10) {
+			if (ErrorLevel != 0 || jumpWordsPicked >= 10) {
 				Click, 692, 285
 				MouseMove, 291, 586
 			}
@@ -112,19 +110,19 @@ composePoem(member) {
 	else if (member = "natsuki_act2")
 	{
 		Loop, 20 {
-			if (natsukiWords < 10) {
+			if (jumpWordsPicked < 10) {
 				for i, poemWord in natsukiPoemWords
 				{
 					ImageSearch, FoundX, FoundY, 633, 190, 1333, 848, .\ASS_dokidoki-goodend_resources\poem_words\%poemWord%.png
 					if (ErrorLevel = 0) {
 						Click, %FoundX%, %FoundY%
 						MouseMove, 291, 586
-						natsukiWords++
+						jumpWordsPicked++
 						break
 					}
 				}
 			}
-			if (ErrorLevel != 0 || natsukiWords >= 10) {
+			if (ErrorLevel != 0 || jumpWordsPicked >= 10) {
 				Click, 692, 285
 				MouseMove, 291, 586
 			}
