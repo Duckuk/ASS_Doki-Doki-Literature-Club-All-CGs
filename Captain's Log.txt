@@ -1,37 +1,67 @@
-ASS-Doki-Doki-Literature-Club-All-Ggs
+ASS-Doki-Doki-Literature-Club-All-CGs
 
 
-	--TO-DO LIST--
-
-Create a log
-	!DONE!
-
-Put poem composition in it's own function
-	!DONE! Not sure why I decided to do this one, the only reason I can think of is reducing the amount of lines in the script file
-
-Replace all of the {Up}{Up} style Sends with {Up 2} style Send
-	!DONE! I'm an idiot
-
-Change name of script
-	!DONE! DDLC_mega_autism doesn't really seem like a proper name for the script in the long-term
-
-Finish act 1 part of the script
-	!DONE!
-
-Finish act 2 part of the script
-	!DONE!
-
-Finish act 3 part of the script
-	!DONE!
-
-Finish act 4 part of the script
-	!DONE!
-
-Redo all acts to make them abuse the skip button more
-	!DONE!
+INSTRUCTIONS FOR USE:
+	Requirements
+		Windows (Tested on Windows 10 specifically, it's unlikely that it'll work on other OSs)
+		AutoHotkey (Tested on version 1.1.29.01, it's extremely unlikely that it'll work on 2.0)
+			https://www.autohotkey.com/
+		Doki Doki Literature Club (Non-Steam v1.1.1)
+			https://ddlc.moe
+		Scaling should be set to 125%
+		Resolution should be set to 1920x1080
 	
-Redo act 1 to make it abuse the save-load system more
-	!DONE!
+	1. Make sure ASS_dokidoki-goodend.ahk & ASS_dokidoki-goodend_resources are in the root directory of Doki Doki Literature Club (i.e., wherever DDLC.exe is)
+	2. Make sure that you are brought to the 'Warning Screen' when you run DDLC (DO NOT CLICK 'I agree.')
+		If you don't get brought to the 'Warning Screen': Delete the firstrun file in the 'game' folder, run DDLC.exe, and click 'Yes' when it asks you if you want to delete save data
+	3. Quit out of DDLC
+	4. Run ASS_dokidoki-goodend.ahk (An icon that looks like a 'H' will pop up in your hidden icons, ignore it)
+	5. Press the ] button and the script will start running
+	
+QUESTIONS & ANSWERS:
+	Q:	The script is stuck.
+	A:	That has a tendency to happen; an RNG-based event that sometimes happens after finishing a poem in act 2 was especially annoying for me while trying to test the script.
+		The only thing you can do about it right now is press [ to stop the script and completely restart the game.
 
-Delete to-do list for public release
-	!CONSIDERING!
+	Q:	The script gets stuck at a specific point in the game.
+	A:	Create an issue describing where it gets stuck and I might try to fix it eventually
+		Better yet, if you're feeling particularly bored and know a bit of AutoHotkey, fork the project, fix the issue, and create a pull request.
+			https://help.github.com/en/articles/about-forks
+			https://help.github.com/en/articles/creating-a-pull-request-from-a-fork
+			
+	Q: 	I've gone through the source code and I think I know how to make it better.
+	A: 	Fork it, make your improvements, test your improvements multiple times to make sure they actually improves things, and then create a pull request.
+	
+TO-DO LIST:
+	Create a log
+		!DONE!
+
+	Put poem composition in its own function
+		!DONE!
+
+	Replace all of the {Up}{Up} style Sends with {Up 2} style Sends
+		!DONE! I'm an idiot
+
+	Change name of script
+		!DONE! DDLC_mega_autism didn't really seem like a proper name for the script in the long-term
+
+	Finish act 1 part of the script
+		!DONE!
+
+	Finish act 2 part of the script
+		!DONE!
+
+	Finish act 3 part of the script
+		!DONE!
+
+	Finish act 4 part of the script
+		!DONE!
+
+	Redo all acts to make them abuse the skip button more
+		!DONE!
+		
+	Redo act 1 to make it abuse the save-load system more
+		!DONE!
+
+	Delete to-do list
+		!CONSIDERING!
