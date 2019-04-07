@@ -1,0 +1,37 @@
+ASS-Doki-Doki-Literature-Club-All-Ggs
+
+
+	--TO-DO LIST--
+
+Create a log
+	!DONE!
+
+Put poem composition in it's own function
+	!DONE! Not sure why I decided to do this one, the only reason I can think of is reducing the amount of lines in the script file
+
+Replace all of the {Up}{Up} style Sends with {Up 2} style Send
+	!DONE! I'm an idiot
+
+Change name of script
+	!DONE! DDLC_mega_autism doesn't really seem like a proper name for the script in the long-term
+
+Finish act 1 part of the script
+	!DONE!
+
+Finish act 2 part of the script
+	!DONE!
+
+Finish act 3 part of the script
+	!DONE!
+
+Finish act 4 part of the script
+	!DONE!
+
+Redo all acts to make them abuse the skip button more
+	!DONE!
+	
+Redo act 1 to make it abuse the save-load system more
+	!DONE!
+
+Delete to-do list for public release
+	!CONSIDERING!
