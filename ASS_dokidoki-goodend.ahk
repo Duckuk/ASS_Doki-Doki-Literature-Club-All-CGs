@@ -1,7 +1,6 @@
 ﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 #Warn, All  ; Enable warnings to assist with detecting common errors.
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
-SetKeyDelay, 0
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 CoordMode, Pixel
 CoordMode, Mouse
@@ -257,8 +256,7 @@ loadGame(slot) {
 	
 	;Naming Protagonist
 	Send, ASSBot
-	Send, {Down}
-	Send, {Enter}
+	Send, {Down}{Enter}
 	Sleep, 1000
 	
 	
@@ -332,8 +330,9 @@ loadGame(slot) {
 	}
 	
 	
-	
+	;Save game
 	saveGame(1)
+	
 	;ACT 1, POEM 2, CG 2 (Sayori)
 	;Compose poem for Sayori
 	composePoem("sayori")
@@ -713,7 +712,7 @@ loadGame(slot) {
 	
 	
 	;ACT 2, POEM 3
-	;There tends to be a scene here with Yuri that disrupts the flow of the script, however it can be avoided by composing at least one poem for Natsuki, which we did earlier
+	;There tends to be a scene here with Yuri that disrupts the flow of the script, however by composing a poem for Natsuki earlier we avoid it
 	;Rush through poem composition
 	composePoem("rush")
 	
@@ -869,7 +868,6 @@ loadGame(slot) {
 	
 	
 	;START OF ACT 4
-	;Welcome to the final act, it is here that the game reveals that the status of club president makes you aware that you're in a video game
 	
 	;New Game Act 4
 	Send, {Down}{Enter}
@@ -901,11 +899,14 @@ loadGame(slot) {
 	ExitApp
 	
 	;GOOD JOB, YOU SPENT 5 DAYS WORKING ON THIS SCRIPT, ONLY TO GET ABSOLUTE JACK-SHIT IN THE END. HOPE YOU'RE PROUD OF YOURSELF, DUCK.
-	;
 	
 return
 
 ;Emergency exit in case the script goes wild and starts doing things that I don't want it to do
 [::
+	ExitApp
+return
+^[::
+	Send, {Ctrl up}
 	ExitApp
 return
