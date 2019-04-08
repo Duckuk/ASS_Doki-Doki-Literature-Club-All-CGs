@@ -284,7 +284,8 @@ loadGame(slot) {
 			break
 		}
 	}
-
+	
+	
 	;ACT 1, POEM 1, CG 1 (Sayori)
 	;Compose poem for Sayori
 	composePoem("sayori")
@@ -312,13 +313,12 @@ loadGame(slot) {
 	;Skip through day until fight happens
 	;Will pick Yuri (this choice doesn't affect anything in the game other than dialogue)
 	Loop {
-			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\fight.png
-			if (ErrorLevel = 0) {
-				Send, {Ctrl up}{Up 3}{Enter}{Ctrl down}
-				break
-			}
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\fight.png
+		if (ErrorLevel = 0) {
+			Send, {Ctrl up}{Up 3}{Enter}{Ctrl down}
+			break
 		}
-	
+	}
 	
 	;Wait until the poem composition screen is reached
 	Loop {
@@ -329,9 +329,9 @@ loadGame(slot) {
 		}
 	}
 	
-	
 	;Save game
 	saveGame(1)
+	
 	
 	;ACT 1, POEM 2, CG 2 (Sayori)
 	;Compose poem for Sayori
@@ -491,7 +491,6 @@ loadGame(slot) {
 		}
 	}
 	
-	
 	;Skip through day until the 'poem showing' screen comes up.
 	Loop {
 		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
@@ -510,8 +509,6 @@ loadGame(slot) {
 			}
 		}
 	}
-	
-	
 	
 	;Skip through day until we get the option of who to help with the festival
 	Loop {
@@ -629,7 +626,6 @@ loadGame(slot) {
 	}
 	
 	;Skip through day until we get the option of who to back up in a glitched fight.
-	;Will pick whoever gets highlighted as this option doesn't actually affect anything in the game
 	Loop {
 		PixelSearch, xColour, yColour, 905, 448, 905, 448, 0xF4E6FF, 2, Fast
 		if (ErrorLevel = 0) {
@@ -637,6 +633,8 @@ loadGame(slot) {
 			break
 		}
 	}
+	
+	;Pick whoever gets highlighted as this option doesn't actually affect anything in the game
 	Loop {
 		ImageSearch, FoundX, FoundY, 0, 0, %A_ScreenWidth%, %A_ScreenHeight%, .\ASS_dokidoki-goodend_resources\fight_glitched_monika.png
 		if (ErrorLevel = 0) {
@@ -681,6 +679,7 @@ loadGame(slot) {
 		}
 	}
 	
+	;Continue with 'poem showing'	
 	Loop, 2 {
 		Loop {
 			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_next.png
@@ -897,7 +896,6 @@ loadGame(slot) {
 	Send, {Numpad1}
 	
 	ExitApp
-	
 	;GOOD JOB, YOU SPENT 5 DAYS WORKING ON THIS SCRIPT, ONLY TO GET ABSOLUTE JACK-SHIT IN THE END. HOPE YOU'RE PROUD OF YOURSELF, DUCK.
 	
 return
