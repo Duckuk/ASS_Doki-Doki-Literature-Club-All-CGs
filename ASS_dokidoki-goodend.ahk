@@ -293,7 +293,7 @@ loadGame(slot) {
 	;Skip through day until the 'poem showing' screen comes up.
 	Send, {Ctrl down}
 	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_first.png
 		if (ErrorLevel = 0) {
 			Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
 			break
@@ -301,7 +301,7 @@ loadGame(slot) {
 	}
 	Loop, 3 {
 		Loop {
-			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_next.png
+			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_next.png
 			if (ErrorLevel = 0) {
 				Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
 				Sleep, 200
@@ -373,7 +373,7 @@ loadGame(slot) {
 	;Skip through day until the 'poem showing' screen comes up.
 	Send, {Ctrl down}
 	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_first.png
 		if (ErrorLevel = 0) {
 			Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
 			break
@@ -381,7 +381,7 @@ loadGame(slot) {
 	}
 	Loop, 3 {
 		Loop {
-			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_next.png
+			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_next.png
 			if (ErrorLevel = 0) {
 				Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
 				Sleep, 200
@@ -441,7 +441,7 @@ loadGame(slot) {
 	;Skip through day until the 'poem showing' screen comes up.
 	Send, {Ctrl down}
 	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_first.png
 		if (ErrorLevel = 0) {
 			Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
 			break
@@ -449,7 +449,7 @@ loadGame(slot) {
 	}
 	Loop, 3 {
 		Loop {
-			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_next.png
+			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_next.png
 			if (ErrorLevel = 0) {
 				Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
 				Sleep, 200
@@ -493,7 +493,7 @@ loadGame(slot) {
 	
 	;Skip through day until the 'poem showing' screen comes up.
 	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_first.png
 		if (ErrorLevel = 0) {
 			Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
 			break
@@ -501,7 +501,7 @@ loadGame(slot) {
 	}
 	Loop, 3 {
 		Loop {
-			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_next.png
+			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_next.png
 			if (ErrorLevel = 0) {
 				Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
 				Sleep, 200
@@ -608,7 +608,7 @@ loadGame(slot) {
 	;Skip through day until the 'poem showing' screen comes up.
 	Send, {Ctrl down}
 	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_first.png
 		if (ErrorLevel = 0) {
 			Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
 			break
@@ -616,7 +616,7 @@ loadGame(slot) {
 	}
 	Loop, 2 {
 		Loop {
-			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_next.png
+			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_next.png
 			if (ErrorLevel = 0) {
 				Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
 				Sleep, 200
@@ -663,7 +663,7 @@ loadGame(slot) {
 	;Skip through day until the 'poem showing' screen comes up.
 	Send, {Ctrl down}
 	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_first.png
 		if (ErrorLevel = 0) {
 			Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
 			break
@@ -682,7 +682,7 @@ loadGame(slot) {
 	;Continue with 'poem showing'	
 	Loop, 2 {
 		Loop {
-			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_next.png
+			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_next.png
 			if (ErrorLevel = 0) {
 				Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
 				Sleep, 200
@@ -718,7 +718,7 @@ loadGame(slot) {
 	;Skip through day until the 'poem showing' screen comes up.
 	Send, {Ctrl down}
 	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_first.png
 		if (ErrorLevel = 0) {
 			Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
 			break
@@ -726,7 +726,7 @@ loadGame(slot) {
 	}
 	Loop, 2 {
 		Loop {
-			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_next.png
+			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_next.png
 			if (ErrorLevel = 0) {
 				Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
 				Sleep, 200
