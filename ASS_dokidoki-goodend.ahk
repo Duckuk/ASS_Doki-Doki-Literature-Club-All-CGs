@@ -138,6 +138,7 @@ composePoem(member) {
 
 saveGame(slot)
 {
+	Sleep, 50
 	Send, {Escape}
 	Sleep, 300
 	if (slot = 1)
@@ -169,6 +170,7 @@ saveGame(slot)
 		MsgBox, Slot '%slot%' not valid
 		ExitApp
 	}
+	Sleep, 50
 	Send, {Escape}
 	Sleep, 300
 	MouseMove, 74, 930
@@ -179,6 +181,7 @@ loadGame(slot) {
 	Send, {Escape}
 	Sleep, 300
 	Click, 202, 652
+	Sleep, 50
 	if (slot = 1)
 	{
 		Click, 751, 432
@@ -208,6 +211,7 @@ loadGame(slot) {
 		MsgBox, Slot '%slot%' not valid
 		ExitApp
 	}
+	Sleep, 50
 	Send, {Right}{Enter}
 	Sleep, 300
 	MouseMove, 74, 930
