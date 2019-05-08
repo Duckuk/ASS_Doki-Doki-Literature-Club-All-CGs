@@ -5,6 +5,9 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 CoordMode, Pixel
 CoordMode, Mouse
 
+IniRead, timer, ASS_dokidoki-goodend.ini, Settings, timer
+IniRead, timerKey, ASS_dokidoki-goodend.ini, Settings, timerKey
+
 natsukiPoemWords := []
 act2_natsukiPoemWords := []
 sayoriPoemWords := []
@@ -26,6 +29,19 @@ Loop, Read, .\ASS_dokidoki-goodend_resources\act1_yuri_poemwords.txt
 	yuriPoemWords.Push(A_LoopReadLine)
 }
 
+timerSplit() {
+	global
+	if (timer) {
+		Send, {%timerKey%}
+	}
+}
+
+skipUntilNextChoice() {
+	Click, right, 872, 1002
+	Send, {Right}{Enter}
+	MouseMove, 74, 930
+}
+
 composePoem(member) {
 	global
 	
@@ -33,7 +49,7 @@ composePoem(member) {
 	if (member = "natsuki")
 	{
 		Loop, 20 {
-			if (jumpWordsPicked < 10) {
+			if (jumpWordsPicked < 7) {
 				for i, poemWord in natsukiPoemWords
 				{
 					ImageSearch, FoundX, FoundY, 633, 190, 1333, 848, .\ASS_dokidoki-goodend_resources\poem_words\%poemWord%.png
@@ -41,11 +57,12 @@ composePoem(member) {
 						Click, %FoundX%, %FoundY%
 						MouseMove, 291, 586
 						jumpWordsPicked++
+						Sleep, 10
 						break
 					}
 				}
 			}
-			if (ErrorLevel != 0 || jumpWordsPicked >= 10) {
+			if (ErrorLevel != 0 || jumpWordsPicked >= 7) {
 				Click, 692, 285
 				MouseMove, 291, 586
 			}
@@ -54,7 +71,7 @@ composePoem(member) {
 	else if (member = "yuri")
 	{
 		Loop, 20 {
-			if (jumpWordsPicked < 10) {
+			if (jumpWordsPicked < 7) {
 				for i, poemWord in yuriPoemWords
 				{
 					ImageSearch, FoundX, FoundY, 633, 190, 1333, 848, .\ASS_dokidoki-goodend_resources\poem_words\%poemWord%.png
@@ -66,7 +83,7 @@ composePoem(member) {
 					}
 				}
 			}
-			if (ErrorLevel != 0 || jumpWordsPicked >= 10) {
+			if (ErrorLevel != 0 || jumpWordsPicked >= 7) {
 				Click, 692, 285
 				MouseMove, 291, 586
 			}
@@ -75,7 +92,7 @@ composePoem(member) {
 	else if (member = "sayori")
 	{
 		Loop, 20 {
-			if (jumpWordsPicked < 10) {
+			if (jumpWordsPicked < 5) {
 				for i, poemWord in sayoriPoemWords
 				{
 					ImageSearch, FoundX, FoundY, 633, 190, 1333, 848, .\ASS_dokidoki-goodend_resources\poem_words\%poemWord%.png
@@ -87,7 +104,7 @@ composePoem(member) {
 					}
 				}
 			}
-			if (ErrorLevel != 0 || jumpWordsPicked >= 10) {
+			if (ErrorLevel != 0 || jumpWordsPicked >= 5) {
 				Click, 692, 285
 				MouseMove, 291, 586
 			}
@@ -109,7 +126,7 @@ composePoem(member) {
 	else if (member = "natsuki_act2")
 	{
 		Loop, 20 {
-			if (jumpWordsPicked < 10) {
+			if (jumpWordsPicked < 5) {
 				for i, poemWord in natsukiPoemWords
 				{
 					ImageSearch, FoundX, FoundY, 633, 190, 1333, 848, .\ASS_dokidoki-goodend_resources\poem_words\%poemWord%.png
@@ -121,7 +138,7 @@ composePoem(member) {
 					}
 				}
 			}
-			if (ErrorLevel != 0 || jumpWordsPicked >= 10) {
+			if (ErrorLevel != 0 || jumpWordsPicked >= 5) {
 				Click, 692, 285
 				MouseMove, 291, 586
 			}
@@ -137,9 +154,16 @@ composePoem(member) {
 
 saveGame(slot)
 {
+	global xColour
+	global yColour
 	Sleep, 50
 	Send, {Escape}
-	Sleep, 300
+	Loop {
+		PixelSearch, xColour, yColour, 251, 385, 251, 385, 0xF4E6FF, 0, Fast
+		if (ErrorLevel = 0) {
+			break
+		}
+	}
 	if (slot = 1)
 	{
 		Click, 751, 432
@@ -176,9 +200,16 @@ saveGame(slot)
 }
 
 loadGame(slot) {
+	global xColour
+	global yColour
 	Sleep, 50
 	Send, {Escape}
-	Sleep, 300
+	Loop {
+		PixelSearch, xColour, yColour, 251, 385, 251, 385, 0xF4E6FF, 0, Fast
+		if (ErrorLevel = 0) {
+			break
+		}
+	}
 	Click, 202, 652
 	Sleep, 50
 	if (slot = 1)
@@ -216,66 +247,46 @@ loadGame(slot) {
 	MouseMove, 74, 930
 }
 
-]::
-	
-	;I'll let you guess what this does
-	Run, .\DDLC.exe
-	
-	;Wait for DDLC window to exist before switching to and maximizing it
-	Loop {
-		if WinExist("ahk_exe DDLC.exe") {
-			WinActivate, ahk_exe DDLC.exe
-			WinMaximize
-			MouseMove, 74, 930
-			break
-		}
-		Sleep, 25
-	}
-	
-	;Agree to terms
-	Loop {
-		ImageSearch, FoundX, FoundY, 0, 0, %A_ScreenWidth%, %A_ScreenHeight%, .\ASS_dokidoki-goodend_resources\terms_agree.png
-		if (ErrorLevel = 0) {
-			Send, {Up}{Enter}
-			break
-		}
-		Send, {Enter}
-		Sleep, 15
-	}
-	
-	;New Game Act 1
+p::
+	;Modify settings + new game
 	Loop {
 		ImageSearch, FoundX, FoundY, 0, 0, %A_ScreenWidth%, %A_ScreenHeight%, .\ASS_dokidoki-goodend_resources\new-game_act1.png
 		if (ErrorLevel = 0) {
-			Send, {Down 3}{Enter}
-			Send, {Left 2}{Right}{Up 2}{Right}{Enter}{Up}{Enter}
-			Send, {Escape}{Down}{Enter}
 			break
 		}
 	}
+	Send, {Down 3}{Enter}
+	Send, {Left 2}{Right}{Up 2}{Right}{Enter}{Up}{Enter}
+	Send, {Escape}{Down}{Enter}
 	
 	;Naming Protagonist
 	Send, ASSBot
 	Send, {Down}{Enter}
-	Sleep, 1000
+	Sleep, 500
 	
 	
 	;START OF ACT 1
 	
 	;Start Timer
-	Send, {Numpad1}
+	timerSplit()
 	
 	;Skip through first day
 	Send, {Ctrl down}
+	Sleep, 50
+	Send, {Ctrl up}
+	
+	skipUntilNextChoice()
+	Sleep, 500
+	
+	;Check for poem tutorial
 	Loop {
-		;Check for poem tutorial
 		PixelSearch, xColour, yColour, 1360, 495, 1360, 495, 0xF4E6FF, 0, Fast
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}
-			Send, {Down}{Enter}
 			break
 		}
 	}
+	
+	Send, {Down}{Enter}
 	
 	;Wait until the poem composition screen is reached
 	Loop {
@@ -291,43 +302,61 @@ loadGame(slot) {
 	composePoem("sayori")
 	
 	;Skip through day until the 'poem showing' screen comes up.
-	Send, {Ctrl down}
+	Send, {Ctrl}
+	skipUntilNextChoice()
 	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_first.png
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
+			skipUntilNextChoice()
+			Send, {Up 2}{Enter}
 			break
 		}
 	}
-	Loop, 3 {
-		Loop {
-			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_next.png
-			if (ErrorLevel = 0) {
-				Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
-				Sleep, 200
-				break
-			}
-		}
-	}
-	
-	;Skip through day until fight happens
-	;Will pick Yuri (this choice doesn't affect anything in the game other than dialogue)
 	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\fight.png
+		PixelSearch, xColour, yColour, 1472, 112, 1472, 112, 0xFFFFFF, 10, Fast
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}{Up 3}{Enter}{Ctrl down}
-			break
-		}
-	}
-	
-	;Wait until the poem composition screen is reached
-	Loop {
-		PixelSearch, xColour, yColour, 214, 420, 214, 420, 0xC7C7C7, 0, Fast
-		if (ErrorLevel = 0) {
+			Sleep, 50
+			Send, {Ctrl down}
+			Sleep, 50
 			Send, {Ctrl up}
 			break
 		}
 	}
+	skipUntilNextChoice()
+	
+	Loop, 3 {
+		Loop {
+			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_next.png
+			if (ErrorLevel = 0) {
+				skipUntilNextChoice()
+				Send, {Up 2}{Enter}
+				break
+			}
+		}
+		Loop {
+			PixelSearch, xColour, yColour, 1472, 112, 1472, 112, 0xFFFFFF, 10, Fast
+			if (ErrorLevel = 0) {
+				Sleep, 50
+				Send, {Ctrl down}
+				Sleep, 50
+				Send, {Ctrl up}
+				break
+			}
+		}
+		skipUntilNextChoice()
+	}
+	
+	;Fight happens
+	;Will pick Yuri (this choice doesn't affect anything in the game other than dialogue)
+	Loop {
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\fight.png
+		if (ErrorLevel = 0) {
+			skipUntilNextChoice()
+			Send, {Up 3}{Enter}
+			break
+		}
+	}
+	
 	
 	;Save game
 	saveGame(1)
@@ -337,16 +366,18 @@ loadGame(slot) {
 	;Compose poem for Sayori
 	composePoem("sayori")
 	
-	;Skip through day until Sayori CG.
-	Send, {Ctrl down}
+	;Skip through day until the 'poem showing' screen comes up.
+	Send, {Ctrl}
+	skipUntilNextChoice()
 	Loop {
-		PixelSearch, xColour, yColour, 1321, 796, 1321, 796, 0xE49B5C, 2, Fast
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}
-			loadGame(1)
 			break
 		}
 	}
+	
+	;Load back to 'ACT 1, POEM 2'
+	loadGame(1)
 	
 	;Dismiss skip button tutorial
 	Loop {
@@ -371,40 +402,57 @@ loadGame(slot) {
 	composePoem("natsuki")
 	
 	;Skip through day until the 'poem showing' screen comes up.
-	Send, {Ctrl down}
+	Send, {Ctrl}
+	skipUntilNextChoice()
 	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_first.png
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
+			skipUntilNextChoice()
+			Send, {Up 2}{Enter}
 			break
 		}
 	}
+	Loop {
+		PixelSearch, xColour, yColour, 1472, 112, 1472, 112, 0xFFFFFF, 10, Fast
+		if (ErrorLevel = 0) {
+			Sleep, 50
+			Send, {Ctrl down}
+			Sleep, 50
+			Send, {Ctrl up}
+			break
+		}
+	}
+	skipUntilNextChoice()
+	
 	Loop, 3 {
 		Loop {
-			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_next.png
+			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_next.png
 			if (ErrorLevel = 0) {
-				Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
-				Sleep, 200
+				skipUntilNextChoice()
+				Send, {Up 2}{Enter}
 				break
 			}
 		}
+		Loop {
+			PixelSearch, xColour, yColour, 1472, 112, 1472, 112, 0xFFFFFF, 10, Fast
+			if (ErrorLevel = 0) {
+				Sleep, 50
+				Send, {Ctrl down}
+				Sleep, 50
+				Send, {Ctrl up}
+				break
+			}
+		}
+		skipUntilNextChoice()
 	}
 	
-	;Skip through day until Sayori asks us who we would walk home with
+	;Sayori asks us who we would go home with
 	;Will pick Sayori (this choice doesn't affect anything in the game other than dialogue)
 	Loop {
 		ImageSearch, FoundX, FoundY, 649, 401, 1266, 526, .\ASS_dokidoki-goodend_resources\walkhomewithsayori.png
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
-			break
-		}
-	}
-	
-	;Skip through day until the poem composition screen is reached
-	Loop {
-		PixelSearch, xColour, yColour, 214, 420, 214, 420, 0xC7C7C7, 0, Fast
-		if (ErrorLevel = 0) {
-			Send, {Ctrl up}
+			skipUntilNextChoice()
+			Send, {Up 2}{Enter}
 			break
 		}
 	}
@@ -414,56 +462,76 @@ loadGame(slot) {
 	;Compose poem for Natsuki
 	composePoem("natsuki")
 	
-	;Skip through day until Natsuki CG
-	Send, {Ctrl down}
+	;Skip through day until the 'poem showing' screen comes up.
+	Send, {Ctrl}
+	skipUntilNextChoice()
 	Loop {
-		PixelSearch, xColour, yColour, 1169, 253, 1169, 253, 0x846B69, 2, Fast
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}
-			loadGame(1)
 			break
 		}
 	}
 	
-	;Wait until the poem composition screen is reached
-	Loop {
-		PixelSearch, xColour, yColour, 214, 420, 214, 420, 0xC7C7C7, 0, Fast
-		if (ErrorLevel = 0) {
-			break
-		}
-	}
-
+	;Load back to 'ACT 1, POEM 2'
+	loadGame(1)
+	
 	
 	;ACT 1, POEM 2, CG 1 (Yuri)
 	;Compose poem for Yuri
 	composePoem("yuri")
 	
 	;Skip through day until the 'poem showing' screen comes up.
-	Send, {Ctrl down}
+	Send, {Ctrl}
+	skipUntilNextChoice()
 	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_first.png
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
+			skipUntilNextChoice()
+			Send, {Up 2}{Enter}
 			break
 		}
 	}
+	Loop {
+		PixelSearch, xColour, yColour, 1472, 112, 1472, 112, 0xFFFFFF, 10, Fast
+		if (ErrorLevel = 0) {
+			Sleep, 50
+			Send, {Ctrl down}
+			Sleep, 50
+			Send, {Ctrl up}
+			break
+		}
+	}
+	skipUntilNextChoice()
+	
 	Loop, 3 {
 		Loop {
-			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_next.png
+			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_next.png
 			if (ErrorLevel = 0) {
-				Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
-				Sleep, 200
+				skipUntilNextChoice()
+				Send, {Up 2}{Enter}
 				break
 			}
 		}
+		Loop {
+			PixelSearch, xColour, yColour, 1472, 112, 1472, 112, 0xFFFFFF, 10, Fast
+			if (ErrorLevel = 0) {
+				Sleep, 50
+				Send, {Ctrl down}
+				Sleep, 50
+				Send, {Ctrl up}
+				break
+			}
+		}
+		skipUntilNextChoice()
 	}
 	
-	;Skip through day until Sayori asks us who we would walk home with
+	;Sayori asks us who we would go home with
 	;Will pick Sayori (this choice doesn't affect anything in the game other than dialogue)
 	Loop {
 		ImageSearch, FoundX, FoundY, 649, 401, 1266, 526, .\ASS_dokidoki-goodend_resources\walkhomewithsayori.png
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
+			skipUntilNextChoice()
+			Send, {Up 2}{Enter}
 			break
 		}
 	}
@@ -482,94 +550,125 @@ loadGame(slot) {
 	;Compose poem for Yuri
 	composePoem("yuri")
 	
-	;Skip through day until Yuri CG
-	Send, {Ctrl down}
-	Loop {
-		PixelSearch, xColour, yColour, 1728, 868, 1728, 868, 0x5E404A, 2, Fast
-		if (ErrorLevel = 0) {
-			break
-		}
-	}
-	
 	;Skip through day until the 'poem showing' screen comes up.
+	Send, {Ctrl}
+	skipUntilNextChoice()
 	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_first.png
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
+			skipUntilNextChoice()
+			Send, {Up 2}{Enter}
 			break
 		}
 	}
-	Loop, 3 {
+	Loop {
+		PixelSearch, xColour, yColour, 1472, 112, 1472, 112, 0xFFFFFF, 10, Fast
+		if (ErrorLevel = 0) {
+			Sleep, 50
+			Send, {Ctrl down}
+			Sleep, 50
+			Send, {Ctrl up}
+			break
+		}
+	}
+	skipUntilNextChoice()
+	
+	Loop, 2 {
 		Loop {
-			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_next.png
+			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_next.png
 			if (ErrorLevel = 0) {
-				Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
-				Sleep, 200
+				skipUntilNextChoice()
+				Send, {Up 2}{Enter}
 				break
 			}
 		}
+		Loop {
+			PixelSearch, xColour, yColour, 1472, 112, 1472, 112, 0xFFFFFF, 10, Fast
+			if (ErrorLevel = 0) {
+				Sleep, 50
+				Send, {Ctrl down}
+				Sleep, 50
+				Send, {Ctrl up}
+				break
+			}
+		}
+		skipUntilNextChoice()
 	}
 	
-	;Skip through day until we get the option of who to help with the festival
 	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\imgoingwith.png
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_next.png
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}
-			saveGame(2)
-			Sleep, 200
+			skipUntilNextChoice()
+			Send, {Up 2}{Enter}
 			break
 		}
 	}
-	
-	
-	;ACT 1, CG 3 (Natsuki)
-	Send, {Up 5}{Enter}
-	
-	;Skip through days until we get last Natsuki CG
-	Send, {Ctrl down}
-	Loop {
-		PixelSearch, xColour, yColour, 350, 715, 350, 715, 0xDEEFFA, 2, Fast
-		if (ErrorLevel = 0) {
-			Send, {Ctrl up}
-			loadGame(2)
-			break
-		}
-	}
+	skipUntilNextChoice()
 	
 	
 	;ACT 1, CG 3 (Yuri)
-	Send, {Up 4}{Enter}
+	;We get the option of who to help with the festival
 	
-	;Skip through days until we get last Yuri CG
-	Send, {Ctrl down}
+	;Save and pick Yuri
 	Loop {
-		PixelSearch, xColour, yColour, 1142, 802, 1142, 802, 0x91A1B8, 2, Fast
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\imgoingwith.png
 		if (ErrorLevel = 0) {
+			saveGame(2)
+			skipUntilNextChoice()
+			Send, {Up 4}{Enter}
 			break
 		}
 	}
 	
-	
-	;ACT 1, CG 3 (Sayori)
-	
-	;Skip through days until we get option to either cuck or confess to Sayori
-	;Will pick confess, since that's the only way to get Sayori's last CG
+	;Wait until we get to the Sayori 'confession' then load game
 	Loop {
 		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\sayori_confession.png
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}{Up 3}{Enter}{Ctrl down}
+			break
+		}
+	}
+	loadGame(2)
+	
+	
+	;ACT 1, CG 3 (Natsuki)
+	
+	;Will pick Natsuki
+	Loop {
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\imgoingwith.png
+		if (ErrorLevel = 0) {
+			skipUntilNextChoice()
+			Send, {Up 5}{Enter}
 			break
 		}
 	}
 	
+	;Wait until we get to the Sayori 'confession' then confess
+	Loop {
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\sayori_confession.png
+		if (ErrorLevel = 0) {
+			skipUntilNextChoice()
+			Send, {Up 3}{Enter}
+			break
+		}
+	}
 	
-	;ACT 1, FINAL STRETCH
+	;Skip past Sayori's 'batshit insane' poem
+	Loop {
+		PixelSearch, xColour, yColour, 1472, 112, 1472, 112, 0xFFFFFF, 10, Fast
+		if (ErrorLevel = 0) {
+			Sleep, 50
+			Send, {Ctrl down}
+			Sleep, 50
+			Send, {Ctrl up}
+			break
+		}
+	}
+	skipUntilNextChoice()
 	
-	;Skip through rest of act until start of act 2
+	;Wait until act 2 main menu
 	Loop {
 		ImageSearch, FoundX, FoundY, 0, 0, %A_ScreenWidth%, %A_ScreenHeight%, .\ASS_dokidoki-goodend_resources\new-game_act2.png
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}
 			break
 		}
 	}
@@ -577,15 +676,18 @@ loadGame(slot) {
 	
 	
 	;START OF ACT 2
+	
 	;New Game Act 2
 	Send, {Down}{Enter}
+	Send, {Ctrl}
+	skipUntilNextChoice()
+	Sleep, 500
 	
-	;Skip through until special poem box
-	Send, {Ctrl down}
+	;Select 'No' at special poem box
 	Loop {
 		PixelSearch, xColour, yColour, 929, 571, 929, 571, 0xF4E6FF, 0, Fast
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}{Right 2}{Enter}{Ctrl down}
+			Send, {Right 2}{Enter}
 			break
 		}
 	}
@@ -594,42 +696,64 @@ loadGame(slot) {
 	Loop {
 		PixelSearch, xColour, yColour, 214, 420, 214, 420, 0xC7C7C7, 0, Fast
 		if (ErrorLevel = 0) {
+			break
+		}
+	}
+	
+	
+	;ACT 2, POEM 1
+	;Rush through poem composition
+	composePoem("natsuki")
+	Send, {Ctrl}
+	
+	;Skip through day until the 'poem showing' screen comes up.
+	skipUntilNextChoice()
+	Loop {
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
+		if (ErrorLevel = 0) {
+			skipUntilNextChoice()
+			Send, {Up 2}{Enter}
+			break
+		}
+	}
+	Loop {
+		PixelSearch, xColour, yColour, 1472, 112, 1472, 112, 0xFFFFFF, 10, Fast
+		if (ErrorLevel = 0) {
+			Sleep, 50
+			Send, {Ctrl down}
+			Sleep, 50
 			Send, {Ctrl up}
 			break
 		}
 	}
+	skipUntilNextChoice()
 	
-	;ACT 2, POEM 1
-	;There tends to be a scene later on with Yuri that disrupts the flow of the entire script, however it can be avoided by composing at least one poem for Natsuki
-	;I don't even care if I lose time trying to avoid the scene, I'm just getting tired of restarting the whole thing everytime RNG isn't in my favour
-	;Compose poem for Natsuki
-	composePoem("natsuki")
-	
-	;Skip through day until the 'poem showing' screen comes up.
-	Send, {Ctrl down}
-	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_first.png
-		if (ErrorLevel = 0) {
-			Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
-			break
-		}
-	}
 	Loop, 2 {
 		Loop {
-			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_next.png
+			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_next.png
 			if (ErrorLevel = 0) {
-				Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
-				Sleep, 200
+				skipUntilNextChoice()
+				Send, {Up 2}{Enter}
 				break
 			}
 		}
+		Loop {
+			PixelSearch, xColour, yColour, 1472, 112, 1472, 112, 0xFFFFFF, 10, Fast
+			if (ErrorLevel = 0) {
+				Sleep, 50
+				Send, {Ctrl down}
+				Sleep, 50
+				Send, {Ctrl up}
+				break
+			}
+		}
+		skipUntilNextChoice()
 	}
 	
 	;Skip through day until we get the option of who to back up in a glitched fight.
 	Loop {
 		PixelSearch, xColour, yColour, 905, 448, 905, 448, 0xF4E6FF, 2, Fast
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}
 			break
 		}
 	}
@@ -644,13 +768,22 @@ loadGame(slot) {
 		Send, {Down 2}{Enter}
 		Sleep, 15
 	}
-	Send, {Ctrl down}
 	
-	;Skip through day until the poem composition screen is reached
+	;Skip through normally until skip button becomes visible
+	Send, {Ctrl down}
+	Loop {
+		PixelSearch, xColour, yColour, 1447, 326, 1447, 326, 0xC1CEE9, 2, Fast
+		if (ErrorLevel = 0) {
+			break
+		}
+	}
+	Send, {Ctrl up}
+	skipUntilNextChoice()
+	
+	;Wait until the poem composition screen is reached
 	Loop {
 		PixelSearch, xColour, yColour, 214, 420, 214, 420, 0xC7C7C7, 0, Fast
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}
 			break
 		}
 	}
@@ -658,92 +791,140 @@ loadGame(slot) {
 	
 	;ACT 2, POEM 2
 	;Rush through poem composition
-	composePoem("rush")
+	Loop, 20 {
+		Sleep, 1
+		Click, 692, 285
+	}
+	Send, {Ctrl}
 	
 	;Skip through day until the 'poem showing' screen comes up.
-	Send, {Ctrl down}
+	skipUntilNextChoice()
 	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_first.png
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
+			skipUntilNextChoice()
+			Send, {Up 2}{Enter}
 			break
 		}
 	}
+	Loop {
+		PixelSearch, xColour, yColour, 1472, 112, 1472, 112, 0xFFFFFF, 10, Fast
+		if (ErrorLevel = 0) {
+			Sleep, 50
+			Send, {Ctrl down}
+			Sleep, 50
+			Send, {Ctrl up}
+			break
+		}
+	}
+	skipUntilNextChoice()
+	Sleep, 500
 	
 	;Wait for "Please help me." box
 	Loop {
 		PixelSearch, xColour, yColour, 949, 516, 949, 516, 0xF4E6FF, 10, Fast
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}{Right}{Enter}{Ctrl down}
+			Send, {Right}{Enter}
 			break
 		}
 	}
+	skipUntilNextChoice()
 	
-	;Continue with 'poem showing'	
 	Loop, 2 {
 		Loop {
-			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_next.png
+			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_next.png
 			if (ErrorLevel = 0) {
-				Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
-				Sleep, 200
+				skipUntilNextChoice()
+				Send, {Up 2}{Enter}
 				break
 			}
 		}
+		Loop {
+			PixelSearch, xColour, yColour, 1472, 112, 1472, 112, 0xFFFFFF, 10, Fast
+			if (ErrorLevel = 0) {
+				Sleep, 50
+				Send, {Ctrl down}
+				Sleep, 50
+				Send, {Ctrl up}
+				break
+			}
+		}
+		skipUntilNextChoice()
 	}
 	
-	;Skip through until special poem box
+	Sleep, 50
+	
+	;Select 'No' at special poem box
 	Loop {
 		PixelSearch, xColour, yColour, 929, 571, 929, 571, 0xF4E6FF, 0, Fast
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}{Right 2}{Enter}{Ctrl down}
+			Sleep, 100
+			Send, {Right 2}{Enter}
 			break
 		}
 	}
+	Send, {Ctrl down}
+	Sleep, 50
+	Send, {Ctrl up}
+	skipUntilNextChoice()
 	
-	;Skip through day until the poem composition screen is reached
+	;Wait until the poem composition screen is reached
 	Loop {
 		PixelSearch, xColour, yColour, 214, 420, 214, 420, 0xC7C7C7, 0, Fast
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}
 			break
 		}
 	}
-	
 	
 	;ACT 2, POEM 3
-	;There tends to be a scene here with Yuri that disrupts the flow of the script, however by composing a poem for Natsuki earlier we avoid it
 	;Rush through poem composition
-	composePoem("rush")
+	Loop, 20 {
+		Sleep, 1
+		Click, 692, 285
+	}
+	Send, {Ctrl}
 	
 	;Skip through day until the 'poem showing' screen comes up.
-	Send, {Ctrl down}
+	skipUntilNextChoice()
 	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_first.png
+		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_first.png
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
+			skipUntilNextChoice()
+			Send, {Up 2}{Enter}
 			break
 		}
 	}
+	
 	Loop, 2 {
 		Loop {
-			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, *2 .\ASS_dokidoki-goodend_resources\poem_next.png
+			ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\poem_next.png
 			if (ErrorLevel = 0) {
-				Send, {Ctrl up}{Up 2}{Enter}{Ctrl down}
-				Sleep, 200
+				skipUntilNextChoice()
+				Send, {Up 2}{Enter}
 				break
 			}
 		}
+		Loop {
+			PixelSearch, xColour, yColour, 1472, 112, 1472, 112, 0xFFFFFF, 10, Fast
+			if (ErrorLevel = 0) {
+				Sleep, 50
+				Send, {Ctrl down}
+				Sleep, 50
+				Send, {Ctrl up}
+				break
+			}
+		}
+		skipUntilNextChoice()
 	}
 	
 	;Skip through day until "Just Monika." shows up
 	Loop {
 		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\just-monika.png
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}
 			Send, {Up 2}{Enter}
 			Sleep, 100
 			Send, {Right}{Enter}
-			Send, {Ctrl down}
+			Send, {Ctrl}
 			break
 		}
 	}
@@ -752,35 +933,41 @@ loadGame(slot) {
 	Loop {
 		PixelSearch, xColour, yColour, 929, 571, 929, 571, 0xF4E6FF, 0, Fast
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}
+			Sleep, 50
 			Send, {Right 2}{Enter}
-			Sleep, 500
+			Sleep, 50
+			Send, {Ctrl down}
+			Sleep, 50
+			Send, {Ctrl up}
 			break
 		}
 	}
-	
+
 	;Skip through day until we get the option to pick who to help with the poetry performance.
 	;Will pick Monika, since she forces you to pick her even if you pick one of the other members
-	Send, {Ctrl down}
+	skipUntilNextChoice()
+	Sleep, 500
 	Loop {
 		PixelSearch, xColour, yColour, 960, 502, 960, 502, 0xF4E6FF, 0, Fast
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}{Down 3}{Enter}{Ctrl down}
+			Send, {Down 3}{Enter}
 			break
 		}
 	}
 	
 	;Skip through day until we get the option to either deny or confess to Yuri
 	;Will pick confess since this choice affects LITERALLY nothing, not even any of the dialogue changes
+	skipUntilNextChoice()
 	Loop {
 		PixelSearch, xColour, yColour, 678, 358, 678, 358, 0xF4E6FF, 0, Fast
 		if (ErrorLevel = 0) {
-			Send, {Ctrl up}{Down}{Enter}{Ctrl down}
+			Send, {Down}{Enter}
 			break
 		}
 	}
 	
 	;Skip through dialogue until Yuri death scene appears
+	Send, {Ctrl down}
 	Loop {
 		ImageSearch, FoundX, FoundY, 0, 0, %A_ScreenWidth%, %A_ScreenHeight%, .\ASS_dokidoki-goodend_resources\yuri_death.png
 		if (ErrorLevel = 0) {
@@ -820,7 +1007,6 @@ loadGame(slot) {
 	
 	
 	;START OF ACT 3
-	
 	;Click through dialogue until Monika CG (skip doesn't work here either)
 	Loop {
 		PixelSearch, xColour, yColour, 986, 370, 986, 370, 0x2B4ACB, 10, Fast
@@ -867,37 +1053,23 @@ loadGame(slot) {
 	
 	
 	;START OF ACT 4
-	
 	;New Game Act 4
 	Send, {Down}{Enter}
+	Send, {Ctrl}
+	skipUntilNextChoice()
+	Sleep, 250
 	
-	;Skip through act until skip button gets disabled
-	Send, {Ctrl down}
-	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\sayori-ehehe_act4.png
-		if (ErrorLevel = 0) {
-			Send, {Ctrl up}
-			break
+	if (timer) {
+		Loop {
+			PixelSearch, xColour, yColour, 147, 889, 147, 889, 0x5BFAA5, 10, Fast
+			if (ErrorLevel = 1) {
+				timerSplit()
+				break
+			}
 		}
 	}
-	
-	;Click through act until start of credits
-	Loop {
-		ImageSearch, FoundX, FoundY, 404, 823, 1240, 1003, .\ASS_dokidoki-goodend_resources\sayori-we-all-love-you_act4.png
-		if (ErrorLevel = 0) {
-			Send, {Enter 2}
-			break
-		}
-		Send, {Enter}
-		Sleep, 50
-	}
-	
-	;Stop Timer
-	Send, {Numpad1}
 	
 	ExitApp
-	;GOOD JOB, YOU SPENT 5 DAYS WORKING ON THIS SCRIPT, ONLY TO GET ABSOLUTE JACK-SHIT IN THE END. HOPE YOU'RE PROUD OF YOURSELF, DUCK.
-	
 return
 
 ;Emergency exit in case the script goes wild and starts doing things that I don't want it to do
