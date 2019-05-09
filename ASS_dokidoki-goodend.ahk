@@ -50,7 +50,7 @@ composePoem(member) {
 	if (member = "natsuki")
 	{
 		Loop, 20 {
-			if (jumpWordsPicked < 9) {
+			if (jumpWordsPicked < 7) {
 				for i, poemWord in natsukiPoemWords
 				{
 					ImageSearch, FoundX, FoundY, 633, 190, 1333, 848, .\ASS_dokidoki-goodend_resources\poem_words\%poemWord%.png
@@ -63,7 +63,7 @@ composePoem(member) {
 					}
 				}
 			}
-			if (ErrorLevel != 0 || jumpWordsPicked >= 9) {
+			if (ErrorLevel != 0 || jumpWordsPicked >= 7) {
 				Click, 692, 285
 				MouseMove, 291, 586
 			}
@@ -315,7 +315,7 @@ return
 	
 	;ACT 1, POEM 1, CG 1 (Sayori)
 	;Compose poem for Sayori
-	composePoem("sayori")
+	composePoem("rush")
 	
 	;Skip through day until the 'poem showing' screen comes up.
 	Send, {Ctrl}
