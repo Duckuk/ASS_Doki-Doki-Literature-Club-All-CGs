@@ -1019,17 +1019,6 @@ return
 	ExitApp
 return
 
-p::
-	Loop {
-		PixelSearch, xColour, yColour, 200, 788, 200, 788, 0x9955BB, 0, Fast
-		if (ErrorLevel = 0) {
-			ToolTip, woah
-		} else {
-			ToolTip, No
-		}
-	}
-return
-
 ;Emergency exit in case the script goes wild and starts doing things that I don't want it to do
 [::
 	ExitApp
